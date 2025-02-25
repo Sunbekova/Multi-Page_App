@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_component"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/deeplinkingFragment3"
+        android:name="com.example.multi_page_app.DeeplinkingFragment"
+        android:label="fragment_deeplinking"
+        tools:layout="@layout/fragment_deeplinking" />
+    <fragment
+        android:id="@+id/forgroundServiceFragment"
+        android:name="com.example.multi_page_app.ForgroundServiceFragment"
+        android:label="fragment_forground_service"
+        tools:layout="@layout/fragment_forground_service" />
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.multi_page_app.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_deeplinkingFragment3"
+            app:destination="@id/deeplinkingFragment3" />
+        <action
+            android:id="@+id/action_homeFragment_to_forgroundServiceFragment"
+            app:destination="@id/forgroundServiceFragment" />
+    </fragment>
+</navigation>
