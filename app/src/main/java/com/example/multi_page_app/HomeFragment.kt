@@ -1,12 +1,17 @@
 package com.example.multi_page_app
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Switch
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -41,6 +46,19 @@ class HomeFragment : Fragment() {
             view.findNavController().navigate(R.id.action_homeFragment_to_deeplinkingFragment3)}
         view.findViewById<Button>(R.id.btn_forgraund).setOnClickListener{
             view.findNavController().navigate(R.id.action_homeFragment_to_forgroundServiceFragment)}
+
+        // Airplane Mode Toggle
+        val airplaneModeSwitch = view.findViewById<Switch>(R.id.btn_AirplaneModeCheck)
+        airplaneModeSwitch.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                // Redirect user to Airplane Mode settings
+                startActivity(Intent(Settings.ACTION_AIRPLANE_MODE_SETTINGS))
+                Toast.makeText(requireContext(), "Enable Airplane Mode manually", Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(requireContext(), "Airplane Mode remains OFF", Toast.LENGTH_LONG).show()
+            }
+        }
+
         return view
     }
 
