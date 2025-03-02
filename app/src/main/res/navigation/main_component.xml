@@ -17,7 +17,7 @@
         tools:layout="@layout/fragment_forground_service" />
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.multi_page_app.HomeFragment"
+        android:name="com.example.multi_page_app.Fragments.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -26,5 +26,13 @@
         <action
             android:id="@+id/action_homeFragment_to_forgroundServiceFragment"
             app:destination="@id/forgroundServiceFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_contentProviderFragment"
+            app:destination="@id/contentProviderFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/contentProviderFragment"
+        android:name="com.example.multi_page_app.Fragments.ContentProviderFragment"
+        android:label="fragment_content_provider"
+        tools:layout="@layout/fragment_content_provider" />
 </navigation>
