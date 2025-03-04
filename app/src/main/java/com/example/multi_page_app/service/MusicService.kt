@@ -1,4 +1,4 @@
-package com.example.multi_page_app
+package com.example.multi_page_app.service
 
 import android.app.*
 import android.content.Intent
@@ -29,10 +29,11 @@ class MusicService : Service() {
 
     private fun startMusic() {
         if (mediaPlayer == null) {
-            mediaPlayer = MediaPlayer()
-            val assetFileDescriptor = assets.openFd("RickAstley-NeverGonnaGiveYouUp.mp3")
-            mediaPlayer!!.setDataSource(assetFileDescriptor.fileDescriptor, assetFileDescriptor.startOffset, assetFileDescriptor.length)
-            mediaPlayer!!.prepare()
+            mediaPlayer = MediaPlayer().apply {
+                val assetFileDescriptor = assets.openFd("RickAstley-NeverGonnaGiveYouUp.mp3")
+                setDataSource(assetFileDescriptor.fileDescriptor, assetFileDescriptor.startOffset, assetFileDescriptor.length)
+                prepare()
+            }
         }
 
         if (!mediaPlayer!!.isPlaying) {
@@ -63,7 +64,6 @@ class MusicService : Service() {
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("Music Player")
             .setContentText(contentText)
-            //.setSmallIcon(R.drawable.)
             .setContentIntent(pendingIntent)
             .build()
     }

@@ -9,46 +9,47 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
-import com.example.multi_page_app.MusicService
-import com.example.multi_page_app.R
+import com.example.multi_page_app.service.MusicService
+import com.example.multi_page_app.databinding.FragmentForgroundServiceBinding
 
 
 class ForgroundServiceFragment : Fragment() {
 
+    private var _binding: FragmentForgroundServiceBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_forground_service, container, false)
+        _binding = FragmentForgroundServiceBinding.inflate(inflater, container, false)
 
-        val btnHome = view.findViewById<Button>(R.id.btnHome)
-        btnHome.setOnClickListener {
+        return binding.root
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.btnHome.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
         }
 
+        binding.btnStart.setOnClickListener { startMusicService("START") }
+        binding.btnPause.setOnClickListener { startMusicService("PAUSE") }
+        binding.btnStop.setOnClickListener { startMusicService("STOP") }
 
-        val btnStart = view.findViewById<Button>(R.id.btnStart)
-        val btnPause = view.findViewById<Button>(R.id.btnPause)
-        val btnStop = view.findViewById<Button>(R.id.btnStop)
-
-        btnStart.setOnClickListener { startMusicService("START") }
-        btnPause.setOnClickListener { startMusicService("PAUSE") }
-        btnStop.setOnClickListener { startMusicService("STOP") }
-
-        // Request notification permission if needed (Android 13+)
+        // Notification
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS)
                 != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 102)
             }
         }
-
-        return view
 
     }
 
