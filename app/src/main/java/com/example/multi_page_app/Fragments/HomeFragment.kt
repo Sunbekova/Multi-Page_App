@@ -14,9 +14,13 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.example.multi_page_app.R
+import com.example.multi_page_app.databinding.FragmentHomeBinding
 
 
 class HomeFragment : Fragment() {
+
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var airplaneModeReceiver: BroadcastReceiver
 
@@ -24,24 +28,28 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        var view = inflater.inflate(R.layout.fragment_home, container, false)
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         // Handle Navigation Buttons
-        view.findViewById<Button>(R.id.btn_deeplink).setOnClickListener{
-            view.findNavController().navigate(R.id.action_homeFragment_to_deeplinkingFragment3)}
-        view.findViewById<Button>(R.id.btn_forgraund).setOnClickListener{
-            view.findNavController().navigate(R.id.action_homeFragment_to_forgroundServiceFragment)}
-        view.findViewById<Button>(R.id.btn_contentprovider).setOnClickListener{
-            view.findNavController().navigate(R.id.action_homeFragment_to_contentProviderFragment)}
-
+        binding.btnDeeplink.setOnClickListener {
+            view.findNavController().navigate(R.id.action_homeFragment_to_deeplinkingFragment3)
+        }
+        binding.btnForgraund.setOnClickListener {
+            view.findNavController().navigate(R.id.action_homeFragment_to_forgroundServiceFragment)
+        }
+        binding.btnContentprovider.setOnClickListener {
+            view.findNavController().navigate(R.id.action_homeFragment_to_contentProviderFragment)
+        }
         // Opens Airplane Mode Settings
-        val airplaneModeChangeReciever = view.findViewById<Button>(R.id.btn_AirplaneModeCheck)
-        airplaneModeChangeReciever.setOnClickListener() {
+        binding.btnAirplaneModeCheck.setOnClickListener {
             startActivity(Intent(Settings.ACTION_AIRPLANE_MODE_SETTINGS))
         }
 
-        return view
     }
 
     override fun onResume() {
@@ -53,11 +61,8 @@ class HomeFragment : Fragment() {
                 val isAirplaneModeEnabled =
                     Settings.Global.getInt(context?.contentResolver, Settings.Global.AIRPLANE_MODE_ON, 0) != 0
 
-                if (isAirplaneModeEnabled) {
-                    Toast.makeText(context, "Airplane Mode is ON", Toast.LENGTH_LONG).show()
-                } else {
-                    Toast.makeText(context, "Airplane Mode is OFF", Toast.LENGTH_LONG).show()
-                }
+                val message = if (isAirplaneModeEnabled) "Airplane Mode is ON" else "Airplane Mode is OFF"
+                Toast.makeText(context, message, Toast.LENGTH_LONG).show()
             }
         }
 
@@ -70,5 +75,10 @@ class HomeFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         requireContext().unregisterReceiver(airplaneModeReceiver)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null // Prevent memory leaks
     }
 }
