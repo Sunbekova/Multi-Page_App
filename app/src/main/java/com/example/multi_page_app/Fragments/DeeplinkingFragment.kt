@@ -14,28 +14,30 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.FragmentManager
 import com.example.multi_page_app.R
+import com.example.multi_page_app.databinding.FragmentDeeplinkingBinding
 
 
 class DeeplinkingFragment : Fragment() {
+
+    private var _binding: FragmentDeeplinkingBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_deeplinking, container, false)
+        _binding = FragmentDeeplinkingBinding.inflate(inflater, container, false)
 
-        val btnHome = view.findViewById<Button>(R.id.btnHome)
-        btnHome.setOnClickListener {
+        binding.btnHome.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
         }
 
-        val imageToShare = view.findViewById<Button>(R.id.btnChooseImage)
-        imageToShare.setOnClickListener(){
+        binding.btnChooseImage.setOnClickListener(){
             pickImage()
         }
 
-        return view
+        return binding.root
     }
 
     private fun pickImage() {
@@ -82,6 +84,11 @@ class DeeplinkingFragment : Fragment() {
         } catch (e: PackageManager.NameNotFoundException) {
             false
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
 }
