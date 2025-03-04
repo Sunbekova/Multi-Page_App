@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_deeplinking" />
     <fragment
         android:id="@+id/forgroundServiceFragment"
-        android:name="com.example.multi_page_app.ForgroundServiceFragment"
+        android:name="com.example.multi_page_app.Fragments.ForgroundServiceFragment"
         android:label="fragment_forground_service"
         tools:layout="@layout/fragment_forground_service" />
     <fragment
