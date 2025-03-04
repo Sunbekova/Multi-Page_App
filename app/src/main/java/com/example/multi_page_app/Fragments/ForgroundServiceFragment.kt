@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentManager
 import com.example.multi_page_app.MusicService
 import com.example.multi_page_app.R
 
@@ -24,6 +25,12 @@ class ForgroundServiceFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_forground_service, container, false)
+
+        val btnHome = view.findViewById<Button>(R.id.btnHome)
+        btnHome.setOnClickListener {
+            requireActivity().supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        }
+
 
         val btnStart = view.findViewById<Button>(R.id.btnStart)
         val btnPause = view.findViewById<Button>(R.id.btnPause)

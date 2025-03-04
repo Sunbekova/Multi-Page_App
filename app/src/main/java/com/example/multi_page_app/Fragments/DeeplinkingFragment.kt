@@ -1,4 +1,4 @@
-package com.example.multi_page_app
+package com.example.multi_page_app.Fragments
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -12,6 +12,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.FragmentManager
+import com.example.multi_page_app.R
 
 
 class DeeplinkingFragment : Fragment() {
@@ -22,6 +24,12 @@ class DeeplinkingFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_deeplinking, container, false)
+
+        val btnHome = view.findViewById<Button>(R.id.btnHome)
+        btnHome.setOnClickListener {
+            requireActivity().supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        }
+
         val imageToShare = view.findViewById<Button>(R.id.btnChooseImage)
         imageToShare.setOnClickListener(){
             pickImage()

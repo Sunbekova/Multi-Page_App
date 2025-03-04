@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/deeplinkingFragment3"
-        android:name="com.example.multi_page_app.DeeplinkingFragment"
+        android:name="com.example.multi_page_app.Fragments.DeeplinkingFragment"
         android:label="fragment_deeplinking"
         tools:layout="@layout/fragment_deeplinking" />
     <fragment
