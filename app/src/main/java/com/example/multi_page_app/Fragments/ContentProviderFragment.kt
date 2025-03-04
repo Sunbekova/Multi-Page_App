@@ -17,27 +17,34 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.multi_page_app.EventAdapter
 import com.example.multi_page_app.R
+import com.example.multi_page_app.databinding.FragmentContentProviderBinding
 import com.example.multi_page_app.models.EventModel
 
 class ContentProviderFragment : Fragment() {
 
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var eventAdapter: EventAdapter
+    private var _binding: FragmentContentProviderBinding? = null
+    private val binding get() = _binding!!
+
     private val eventsList = mutableListOf<EventModel>()
+    private lateinit var eventAdapter: EventAdapter
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_content_provider, container, false)
+        _binding = FragmentContentProviderBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        val btnHome = view.findViewById<Button>(R.id.btnHome)
-        btnHome.setOnClickListener {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.btnHome.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
         }
 
-        recyclerView = view.findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         // Check and request permission
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_CALENDAR)
@@ -46,8 +53,6 @@ class ContentProviderFragment : Fragment() {
         } else {
             requestPermissions(arrayOf(Manifest.permission.READ_CALENDAR), 101)
         }
-
-        return view
     }
 
     private fun fetchCalendarEvents() {
@@ -57,6 +62,7 @@ class ContentProviderFragment : Fragment() {
         )
         val selection = "${CalendarContract.Events.DTSTART} >= ?"
         val selectionArgs = arrayOf(System.currentTimeMillis().toString())
+
         val cursor: Cursor? = requireContext().contentResolver.query(
             CalendarContract.Events.CONTENT_URI,
             projection,
@@ -75,7 +81,7 @@ class ContentProviderFragment : Fragment() {
 
         if (eventsList.isNotEmpty()) {
             eventAdapter = EventAdapter(eventsList)
-            recyclerView.adapter = eventAdapter
+            binding.recyclerView.adapter = eventAdapter
         } else {
             Toast.makeText(requireContext(), "No upcoming events found", Toast.LENGTH_SHORT).show()
         }
@@ -88,5 +94,10 @@ class ContentProviderFragment : Fragment() {
         } else {
             Toast.makeText(requireContext(), "Permission denied", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null // Prevent memory leaks
     }
 }
